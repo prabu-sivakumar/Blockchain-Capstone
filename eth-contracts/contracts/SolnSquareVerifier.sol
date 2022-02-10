@@ -1,59 +1,65 @@
 pragma solidity >=0.4.21 <0.6.0;
 
 // TODO define a contract call to the zokrates generated solidity contract <Verifier> or <renamedVerifier>
+import "./ERC721Mintable.sol";
+import "./Verifier.sol";
 
+contract SolnSquareVerifier is PrabuERC721Token {
+    Verifier verifier;
 
+    constructor(address verifierAddress) public {
+        verifier = Verifier(verifierAddress);
+    }
 
-// TODO define another contract named SolnSquareVerifier that inherits from your ERC721Mintable class
+    struct Solution {
+        uint256 tokenId;
+        address owner;
+        uint256[2] inputs;
+        bool minted;
+    }
 
+    mapping(bytes32 => Solution) solutions;
+    mapping(uint256 => bytes32) private submittedSolutions;
 
+    event SubmittedSolution(address indexed owner, uint256 indexed tokenId);
 
-// TODO define a solutions struct that can hold an index & an address
+    function submitSolution(
+        uint256[2] memory a,
+        uint256[2][2] memory b,
+        uint256[2] memory c,
+        uint256[2] memory input,
+        address account,
+        uint256 tokenId
+    ) public {
+        require(
+            verifier.verifyTx(a, b, c, input),
+            "Submitted Solution could not be verified"
+        );
+        bytes32 solutionId = keccak256(abi.encodePacked(a, b, c, input));
 
+        submittedSolutions[tokenId] = solutionId;
+        solutions[solutionId].owner = account;
+        solutions[solutionId].tokenId = tokenId;
+        solutions[solutionId].inputs = input;
 
-// TODO define an array of the above struct
+        emit SubmittedSolution(account, tokenId);
+    }
 
+    function mint(address to, uint256 tokenId) public returns (bool) {
+        bytes32 solutionId = submittedSolutions[tokenId];
+        require(
+            solutionId != bytes32(0),
+            "Submitted is not submitted for the TokenId."
+        );
+        require(
+            !solutions[solutionId].minted,
+            "Token Id submitted is already minted"
+        );
 
-// TODO define a mapping to store unique solutions submitted
+        address owner = solutions[submittedSolutions[tokenId]].owner;
+        require(owner == to, "Invalid Token Address Provided");
 
-
-
-// TODO Create an event to emit when a solution is added
-
-
-
-// TODO Create a function to add the solutions to the array and emit the event
-
-
-
-// TODO Create a function to mint new NFT only after the solution has been verified
-//  - make sure the solution is unique (has not been used before)
-//  - make sure you handle metadata as well as tokenSuplly
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        solutions[solutionId].minted = true;
+        return super.mint(to, tokenId);
+    }
+}
