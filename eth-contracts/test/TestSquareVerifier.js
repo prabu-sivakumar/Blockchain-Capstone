@@ -1,4 +1,4 @@
-var Verifier = artifacts.require('Verifier');
+var SquareVerifier = artifacts.require('SquareVerifier');
 
 const zokratesProof = require("../../zokrates/code/square/proof.json");
 
@@ -6,7 +6,7 @@ contract('TestSquareVerifier', accounts => {
     const owner = accounts[0];
 
     beforeEach(async () => {
-        this.contract = await Verifier.new({ from: owner });
+        this.contract = await SquareVerifier.new({ from: owner });
     });
 
     it("should verify proof and return true", async () => {

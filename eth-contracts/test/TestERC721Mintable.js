@@ -4,36 +4,36 @@ contract('TestERC721Mintable', accounts => {
 
     const account_one = accounts[0];
     const account_two = accounts[1];
-    const token_supply_one = 10;
-    const token_supply_two = 20;
+    const token_supply_one = 2;
+    const token_supply_two = 5;
 
     const name = "Prabu Varadharajalu Sivakumar";
     const symbol = "SP";
 
 
     describe('match erc721 spec', function () {
-        beforeEach(async function () {
-            this.contract = await this.contract.new(name, symbol, { from: account_one });
+        before(async function () {
+            this.contract = await PrabuERC721Token.new({ from: account_one });
             for (let i = 0; i < token_supply_one; i++) {
                 await this.contract.mint(account_one, i, { from: account_one });
             }
 
-            for (let i = 0; i < token_supply_two; i++) {
+            for (let i = token_supply_one; i < token_supply_one+token_supply_two; i++) {
                 await this.contract.mint(account_two, i, { from: account_one });
             }
         })
 
         it('should return total supply', async function () {
             let result = await this.contract.totalSupply.call();
-            assert.equal(30, result);
+            assert.equal(7, result);
         })
 
         it('should get token balance', async function () {
             let result = await this.contract.balanceOf(account_one);
-            assert.equal(token_supply_one, result);
+            assert.equal(2, result);
 
             result = await this.contract.balanceOf(account_two);
-            assert.equal(token_supply_two, result);
+            assert.equal(5, result);
         })
 
         // token uri should be complete i.e: https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/1
@@ -43,18 +43,18 @@ contract('TestERC721Mintable', accounts => {
         })
 
         it('should transfer token from one owner to another', async function () {
-            await this.contract.transferFrom(account_two, account_one, (token_supply_two - 1), { from: account2 });
+            await this.contract.transferFrom(account_two, account_one, (token_supply_two - 1), { from: account_two });
             let result = await this.contract.ownerOf((token_supply_two - 1));
             assert.equal(account_one, result);
 
             result = await this.contract.balanceOf(account_one);
             assert.equal(token_supply_one + 1, result);
 
-            result = await this.contract.balanceOf(account2);
+            result = await this.contract.balanceOf(account_two);
             assert.equal(token_supply_two - 1, result);
 
             result = await this.contract.totalSupply.call();
-            assert.equal(30, result);
+            assert.equal(7, result);
         })
     });
 

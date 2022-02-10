@@ -1,14 +1,14 @@
-pragma solidity >=0.4.21 <0.6.0;
+pragma solidity ^0.5.0;
 
 // TODO define a contract call to the zokrates generated solidity contract <Verifier> or <renamedVerifier>
 import "./ERC721Mintable.sol";
-import "./Verifier.sol";
+import "./SquareVerifier.sol";
 
 contract SolnSquareVerifier is PrabuERC721Token {
-    Verifier verifier;
+    SquareVerifier private squareVerifier;
 
     constructor(address verifierAddress) public {
-        verifier = Verifier(verifierAddress);
+        squareVerifier = SquareVerifier(verifierAddress);
     }
 
     struct Solution {
@@ -32,7 +32,7 @@ contract SolnSquareVerifier is PrabuERC721Token {
         uint256 tokenId
     ) public {
         require(
-            verifier.verifyTx(a, b, c, input),
+            squareVerifier.verifyTx(a, b, c, input),
             "Submitted Solution could not be verified"
         );
         bytes32 solutionId = keccak256(abi.encodePacked(a, b, c, input));

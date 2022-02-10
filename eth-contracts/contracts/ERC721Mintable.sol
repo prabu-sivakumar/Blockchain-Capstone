@@ -35,6 +35,10 @@ contract Ownable {
         _owner = newOwner;
         emit OwnershipTransferred(_owner, newOwner);
     }
+
+    function owner() public view returns (address) {
+        return _owner;
+    }
 }
 
 //  TODO's: Create a Pausable contract that inherits from the Ownable contract
@@ -604,18 +608,16 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
 //      -takes in a 'to' address, tokenId, and tokenURI as parameters
 //      -returns a true boolean upon completion of the function
 //      -calls the superclass mint and setTokenURI functions
-contract PrabuERC721Token is ERC721Metadata {
-    constructor(string memory name, string memory symbol)
-        public
-        ERC721Metadata(
-            name,
-            symbol,
-            "https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/"
-        )
-    {}
-
+contract PrabuERC721Token is
+    ERC721Metadata(
+        "Prabu Varadharajalu Sivakumar",
+        "SP",
+        "https://s3-us-west-2.amazonaws.com/udacity-blockchain/capstone/"
+    )
+{
     function mint(address to, uint256 tokenId) public onlyOwner returns (bool) {
         super._mint(to, tokenId);
         _setTokenURI(tokenId);
+        return true;
     }
 }

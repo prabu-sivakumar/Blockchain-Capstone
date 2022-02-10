@@ -10,8 +10,8 @@ contract("TestSolnSquareVerifier", accounts => {
     const tokenId = 1;
 
     beforeEach(async () => {
-        let verifierContract = await Verifier.new({ from: account1 });
-        this.contract = await SolnSquareVerifier.new(verifierContract.address, { from: account1 });
+        let verifierContract = await Verifier.new({ from: account_one });
+        this.contract = await SolnSquareVerifier.new(verifierContract.address, { from: account_one});
     });
 
     it("Should be able add a new Solution", async () => {
@@ -31,8 +31,8 @@ contract("TestSolnSquareVerifier", accounts => {
         let minted = false;
         try {
             await this.contract.submitSolution(...Object.values(zokratesProof.proof), zokratesProof.inputs, account_two, tokenId, { from: account_two });
-            await this.contract.mint(account2, tokenId, { from: account_one });
-            result = true
+            await this.contract.mint(account_two, tokenId, { from: account_one });
+            minted = true
         } catch (e) {
             console.log(e);
             minted = false;
