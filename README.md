@@ -283,5 +283,7 @@ https://testnets.opensea.io/assets/0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656/92
 We could sell items by clicking on the sell button. This initiates a series of Metamask transactions - Initialize Wallet, Approve the item for listing and confirm the items for listing. 
 Once the item is listed, we could lower price. 
 
+Login to the Metamask using another account and ensure the Wallet is sufficiently funded to buy item listed in the listing. 
+
 Screenshots are included in the document:
 https://github.com/prabu-sivakumar/Blockchain-Capstone/blob/master/Documents/Open%20Sea%20Marketplace.docx
