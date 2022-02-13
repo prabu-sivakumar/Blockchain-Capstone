@@ -223,6 +223,8 @@ Contract: TestSquareVerifier
 ```
 ## Truffle Configuration to deploy Smart Contracts on Rinkeby Network
 
+The mnemonic required to initialise the HD Wallet Provider is included in the ```.secret``` file. 
+
 ```javascript
 var HDWalletProvider = require("truffle-hdwallet-provider");
 const fs = require('fs');
