@@ -104,6 +104,10 @@ The generated Verifier.sol file is renamed to SquareVerifier.sol and added to ``
 ## SolnSquareVerifier.sol
 The Solution Square Verifier is a custom implementation of ```PrabuERC721Token``` that calls the Zokrates generated Solidity Verifier to submit solution and mint new tokens. 
 
+## UML Diagram 
+The UML diagram for the completed solution is attached here:
+![SolnSquareVerifier UML Design](https://github.com/prabu-sivakumar/Blockchain-Capstone/blob/master/Documents/Solution%20Square%20Verifier.png)
+
 ## Deployment 
 Modify the ```/eth-contracts/migrations/2_deploy_contracts.js``` to compile and migrate the smart contracts. This is to ensure the required contracts are compiled and deployed in order. ```PrabuERC721Token.sol``` should be deployed before ```SquareVerifier.sol``` and ```SolnSquareVerifier.sol``` should be the last contract deployed. 
 
